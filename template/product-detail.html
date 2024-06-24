@@ -73,7 +73,7 @@
 	</div> <!-- row.// -->
 	<hr>
 	{% if product.stock >= 1 %}
-	<a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+	<a href="{% url 'cart:add_cart' product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
 	{% else %}
 	<h2 class="text-danger">Out of Stock</h2>
 	{% endif %}
