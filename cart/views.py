@@ -35,13 +35,18 @@ def add_cart(request,product_id):
 
 
 def cart(request,total=0,quantity=0,cart_item=None):
+    grandtotal=0
+    tax=0
     try:
         cart=Cart.objects.get(cart_id=get_cart_id(request))
         cart_items=Cart_items.objects.filter(is_active=True,cart=cart)
         
         for item in cart_items:
-            total+=item.product.price*cart_item.quantity
+            total+=item.product.price*item.quantity
             quantity+=item.quantity
+        tax=(2*total)/100
+        grandtotal+=total+tax
+
     except Exception :
         pass
 
@@ -49,6 +54,9 @@ def cart(request,total=0,quantity=0,cart_item=None):
         'total':total,
         'quantity':quantity,
         'cart_items':cart_items,
+        'total':total,
+        'grandtotal':grandtotal,
+        'tax':tax,
     }
 
     return render(request,'cart.html',cart_data)

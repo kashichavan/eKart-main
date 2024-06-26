@@ -8,7 +8,7 @@
 
 <!-- ============================ COMPONENT 1 ================================= -->
 {% if not cart_items %}
-<h2 class="text-center">cart is empty</h2>
+<h2 class="text-center">Cart is Empty</h2>
 <br>
 <div class="text-center">
 	<a href="{% url 'store:store' %}" class="btn btn-outline-primary">continue Shopping</a>
@@ -35,7 +35,7 @@
 		<figure class="itemside align-items-center">
 			<div class="aside"><img src="{{item.product.images.url}}" class="img-sm"></div>
 			<figcaption class="info">
-				<a href="#" class="title text-dark">{{item.product.product_name}}</a>
+				<a href="{% url 'store:product_details' item.product.category.slug   item.product.slug %}" class="title text-dark">{{item.product.product_name}}</a>
 		
 			</figcaption>
 		</figure>
@@ -56,8 +56,8 @@
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">{{ item.subtotal  }}</var> 
-			<small class="text-muted"> {{ item.product.price }} </small> 
+			<var class="price"> ₹ {{ item.subtotal  }}</var> 
+			<small class="text-muted"> ₹ {{ item.product.price }} </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
@@ -77,22 +77,22 @@
 		<div class="card-body">
 			<dl class="dlist-align">
 			  <dt>Total price:</dt>
-			  <dd class="text-right">$69.97</dd>
+			  <dd class="text-right"> ₹ {{ total }}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Tax:</dt>
-			  <dd class="text-right"> $10.00</dd>
+			  <dd class="text-right">₹ {{ tax }}</dd>
 			</dl>
 			<dl class="dlist-align">
 			  <dt>Total:</dt>
-			  <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+			  <dd class="text-right text-dark b"><strong>₹ {{ grandtotal }}</strong></dd>
 			</dl>
 			<hr>
 			<p class="text-center mb-3">
-				<img src="./images/misc/payments.png" height="26">
+				<img src="{% static 'images/misc/payments.png' %}" height="26">
 			</p>
 			<a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
-			<a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
+			<a href="{% url 'store:store' %}" class="btn btn-light btn-block">Continue Shopping</a>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
 
