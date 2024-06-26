@@ -7,7 +7,13 @@
 <div class="container">
 
 <!-- ============================ COMPONENT 1 ================================= -->
-
+{% if not cart_items %}
+<h2 class="text-center">cart is empty</h2>
+<br>
+<div class="text-center">
+	<a href="{% url 'store:store' %}" class="btn btn-outline-primary">continue Shopping</a>
+</div> 
+{% else %}
 <div class="row">
 	<aside class="col-lg-9">
 <div class="card">
@@ -21,6 +27,7 @@
 </tr>
 </thead>
 <tbody>
+
 
 {% for item in cart_items %}
 <tr>
@@ -38,26 +45,27 @@
 					<div class="col"> 
 						<div class="input-group input-spinner">
 							<div class="input-group-prepend">
-							<button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button>
+							<a href="{% url 'cart:remove_cart' item.product.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
 							</div>
 							<input type="text" class="form-control"  value="{{ item.quantity }}">
 							<div class="input-group-append">
-							<button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
+							<a href="{% url 'cart:add_cart' item.product.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
 							</div>
 						</div> <!-- input-group.// -->
 					</div> <!-- col.// -->
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price">{{ item_quantity * item.product.price  }}</var> 
+			<var class="price">{{ item.subtotal  }}</var> 
 			<small class="text-muted"> {{ item.product.price }} </small> 
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="" class="btn btn-danger"> Remove</a>
+	<a href="{% url 'cart:remove_item' item.product.id %}" class="btn btn-danger"> Remove</a>
 	</td>
 </tr>
 {% endfor %}
+
 </tbody>
 </table>
 </div> <!-- card.// -->
@@ -92,6 +100,7 @@
 
 
 </div> <!-- row.// -->
+{% endif %}
 <!-- ============================ COMPONENT 1 END .// ================================= -->
 
 </div> <!-- container .//  -->

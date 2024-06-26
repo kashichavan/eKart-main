@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render,HttpResponse,redirect,get_object_or_404
 from django.urls import reverse 
 from store.models import Product
 from .models import Cart,Cart_items
@@ -30,7 +30,7 @@ def add_cart(request,product_id):
         )
         cart_item.save()
 
-    return redirect('/store/')
+    return redirect('/cart/')
     return redirect('/store/')
 
 
@@ -38,6 +38,7 @@ def cart(request,total=0,quantity=0,cart_item=None):
     try:
         cart=Cart.objects.get(cart_id=get_cart_id(request))
         cart_items=Cart_items.objects.filter(is_active=True,cart=cart)
+        
         for item in cart_items:
             total+=item.product.price*cart_item.quantity
             quantity+=item.quantity
@@ -52,11 +53,29 @@ def cart(request,total=0,quantity=0,cart_item=None):
 
     return render(request,'cart.html',cart_data)
     
+def remove_item(request,product_id):
+    cart=Cart.objects.get(cart_id=get_cart_id(request))
+    product=get_object_or_404(Product,id=product_id)
+
+    item=Cart_items.objects.get(cart=cart,product=product)
+
+    if item.quantity>1:
+        item.quantity-=1
+        item.save()
+    else:
+        item.delete()
+    
 
 
-        
+    return redirect('/cart/')
 
+def remove_one(request,product_id):
+    cart=Cart.objects.get(cart_id=get_cart_id(request))
+    product=get_object_or_404(Product,id=product_id)
+    item=Cart_items.objects.filter(cart=cart,product=product_id)
 
-    return render(request,'cart.html')
+    item.delete()
+
+    return redirect('/cart/')
     
     

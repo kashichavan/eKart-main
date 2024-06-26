@@ -13,3 +13,7 @@ class Cart_items(models.Model):
     is_active=models.BooleanField(default=True)
     
 
+    def subtotal(self):
+        return self.product.price*self.quantity
+    
+
