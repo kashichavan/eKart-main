@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data" action="">
+    {% csrf_token %}
+    <h2>Login</h2>
+    <br>
+    {% if messages %}
+    <div class="alert alert-primary" role="alert">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>  
+    {% endif %} 
+
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">email</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+    </div>
+
+    
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+    </div>
+
+
+    <div class="mb-3">New User <a href="{% url 'accounts:register' %}">Register</a></div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  
+{% endblock content %}

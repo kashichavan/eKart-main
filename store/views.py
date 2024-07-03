@@ -38,21 +38,22 @@ def  store(request,category_slug=None):
 
 def product_details(request,category_slug,product_slug):
     product_=None
-
     try:
         product_=Product.objects.get(category__slug=category_slug,slug=product_slug)
-        cart=Cart.objects.get(cart_id=get_cart_id(request))
-        cart_tem=Cart_items.objects.filter(product=product_,cart=cart).exists()
     except Exception as e:
         print(e)
     
-    return render(request,'product-detail.html',{'product':product_,'cartitem':cart_tem})
-
+    return render(request,'product-detail.html',{'product':product_,})
+ 
 
 def search(request):
-    data=request.GET['keyword']
-    res=Product.objects.filter(product_name__icontains=data)
-    product_count=res.count()
+    data=request.GET.get('keyword')
+    if data!=None:
+        res=Product.objects.filter(product_name__icontains=data)
+        product_count=res.count()
+    else:
+        res=Product.objects.filter( is_avaiable=True)
+        product_count=res.count()
     data={'data':res,'product_count':product_count}
     return render(request,'store.html',data)
 
