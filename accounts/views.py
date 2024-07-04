@@ -24,6 +24,7 @@ def register(request):
                   password = form.cleaned_data['password']
                   username=form.cleaned_data['username']
                   user=Account.objects.create_user(first_name=first_name,last_name=last_name,username=username,email=email,password=password)
+                  user.is_active=True
                   user.save()
                   return redirect(reverse('accounts:login'))
     f=RegistrationForm()
@@ -36,7 +37,7 @@ def login_view(request):
             password=request.POST['password']
             form=LoginForm(request.POST)
             if form.is_valid():
-                user=auth.authenticate(email=email,password=password)
+                user=authenticate(request,email=email,password=password)
                 print(user)
                 if user is not None:
                       auth.login(request,user)
@@ -46,3 +47,8 @@ def login_view(request):
                       return redirect(reverse('accounts:login'))
     f=LoginForm()
     return render(request,'login.html',context={'form':f})
+
+def logout_view(request):
+    auth.logout(request)
+    messages.success(request, 'You are logged out.')
+    return redirect(reverse('accounts:login'))
